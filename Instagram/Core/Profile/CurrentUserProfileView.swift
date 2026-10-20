@@ -38,7 +38,7 @@ struct CurrentUserProfileView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        print("Hello")
+                        AuthService.shared.signOut()
                     } label: {
                         Image(systemName: "line.3.horizontal")
                             .foregroundStyle(Color.black)

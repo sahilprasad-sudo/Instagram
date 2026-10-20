@@ -1,3 +1,4 @@
+
 //
 //  CompleteSignedUpView.swift
 //  Instagram
@@ -59,3 +60,4 @@ struct CompleteSignedUpView: View {
     CompleteSignedUpView()
         .environmentObject(RegistrationViewModel())
 }
+

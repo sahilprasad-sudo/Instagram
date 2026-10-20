@@ -29,6 +29,7 @@ struct AddEmailView: View {
                     Text("Email")
                 }
                 .modifier(IGTextFieldModifier())
+                .textInputAutocapitalization(.never)
                 
                 NavigationLink {
                     CreateUsernameView()
@@ -53,4 +54,5 @@ struct AddEmailView: View {
 
 #Preview {
     AddEmailView()
+        .environmentObject(RegistrationViewModel())
 }
