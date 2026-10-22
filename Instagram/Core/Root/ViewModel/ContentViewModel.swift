@@ -9,26 +9,28 @@ import Foundation
 import Combine
 import FirebaseAuth
 
+// MARK: - Content ViewModel
+/// Ye ViewModel `AuthService` ko listen karta hai.
+/// Jaise hi user login ya logout karta hai, ye `ContentView` ko turant update kar deta hai.
 @MainActor
-class ContentViewModel:ObservableObject{
+class ContentViewModel: ObservableObject {
 
+    // MARK: - Properties
     private let service = AuthService.shared
+    private var cancellables = Set<AnyCancellable>()
     
-    @Published var userSession:FirebaseAuth.User?
-    @Published var currentUser:User?
+    @Published var userSession: FirebaseAuth.User?
+    @Published var currentUser: User?
     
-    private var cancellables =  Set<AnyCancellable>()
-    
-    init(){
+    // MARK: - Initializer
+    init() {
         setupSubscribers()
     }
     
-//    func setupSubscribers(){
-//        service.$userSession.sink { [weak self] userSession in
-//            self?.userSession = userSession
-//        }
-//    }
+    // MARK: - Combine Subscribers
+    /// `AuthService` ke `@Published` variables (`userSession` aur `currentUser`) ko observe karta hai.
     func setupSubscribers() {
+        // 1. User login/logout session changes suno
         service.$userSession
             .receive(on: DispatchQueue.main)
             .sink { [weak self] userSession in
@@ -36,6 +38,7 @@ class ContentViewModel:ObservableObject{
             }
             .store(in: &cancellables)
         
+        // 2. Logged-in user ke profile data updates suno
         service.$currentUser
             .receive(on: DispatchQueue.main)
             .sink { [weak self] currentUser in
@@ -43,6 +46,4 @@ class ContentViewModel:ObservableObject{
             }
             .store(in: &cancellables)
     }
-    
-
 }

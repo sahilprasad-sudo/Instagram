@@ -8,26 +8,37 @@
 import Foundation
 import FirebaseAuth
 
-struct User:Identifiable,Codable,Hashable{
-    let id: String
-    var username:String
-    var profileImageUrl:String?
-    var fullname:String?
-    var bio:String?
-    let email:String
+// MARK: - User Model
+/// Har Instagram user ka data structure.
+/// - `Identifiable`: SwiftUI loops (`ForEach`) mein har user ko unique `id` se pehchanne ke liye.
+/// - `Codable`: Firebase Firestore ke JSON data ko Swift object mein convert karne ke liye (aur vice-versa).
+/// - `Hashable`: NavigationStack (`navigationDestination`) mein user object pass karne ke liye.
+struct User: Identifiable, Codable, Hashable {
     
-    var isCurrentUser:Bool{
-        guard let currentUid = Auth.auth().currentUser?.uid else{
+    // MARK: - Properties
+    let id: String                  // Firebase Auth se mila unique User ID (UID)
+    var username: String            // User ka handle (e.g., "batman")
+    var profileImageUrl: String?    // Profile photo ka naam ya URL (optional kyunki naye user ki photo nahi hoti)
+    var fullname: String?           // User ka poora naam (optional)
+    var bio: String?                // Profile bio text (optional)
+    let email: String               // User ka login email address
+    
+    // MARK: - Computed Properties
+    /// Check karta hai ki kya ye profile abhi logged-in user ki apni profile hai.
+    var isCurrentUser: Bool {
+        guard let currentUid = Auth.auth().currentUser?.uid else {
             return false
         }
         return currentUid == id
     }
 }
 
+// MARK: - Mock Data (Testing & Previews ke liye)
 extension User {
+    
+    /// SwiftUI Previews aur dummy UI testing ke liye sample users ki list.
     static var MOCK_USER: [User] = [
-        // Original user
-        .init(
+        User(
             id: NSUUID().uuidString,
             username: "blackpanther",
             profileImageUrl: "Image",
@@ -35,8 +46,7 @@ extension User {
             bio: "Wakanda Forever",
             email: "blackpanther@gmail.com"
         ),
-        // 10 additional mock users
-        .init(
+        User(
             id: NSUUID().uuidString,
             username: "batman",
             profileImageUrl: "Image 9",
@@ -44,7 +54,7 @@ extension User {
             bio: "Gotham's Dark Knight",
             email: "batman@gmail.com"
         ),
-        .init(
+        User(
             id: NSUUID().uuidString,
             username: "ironman",
             profileImageUrl: "Image 10",
@@ -52,7 +62,7 @@ extension User {
             bio: "Genius, billionaire, playboy, philanthropist",
             email: "ironman@gmail.com"
         ),
-        .init(
+        User(
             id: NSUUID().uuidString,
             username: "venom",
             profileImageUrl: "Image 15",
@@ -60,7 +70,7 @@ extension User {
             bio: "We are Venom",
             email: "venom@gmail.com"
         ),
-        .init(
+        User(
             id: NSUUID().uuidString,
             username: "spiderman",
             profileImageUrl: "Image 12",
@@ -68,7 +78,7 @@ extension User {
             bio: "Your friendly neighborhood Spider-Man",
             email: "spiderman@gmail.com"
         ),
-        .init(
+        User(
             id: NSUUID().uuidString,
             username: "thor",
             profileImageUrl: "Image 13",
@@ -76,7 +86,7 @@ extension User {
             bio: "God of Thunder, Son of Odin",
             email: "thor@gmail.com"
         ),
-        .init(
+        User(
             id: NSUUID().uuidString,
             username: "captainamerica",
             profileImageUrl: "Image 14",
@@ -84,7 +94,7 @@ extension User {
             bio: "I can do this all day",
             email: "cap@gmail.com"
         ),
-        .init(
+        User(
             id: NSUUID().uuidString,
             username: "doctorstrange",
             profileImageUrl: "Image 15",
@@ -94,4 +104,3 @@ extension User {
         )
     ]
 }
-

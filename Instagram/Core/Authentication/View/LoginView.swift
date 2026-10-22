@@ -7,93 +7,108 @@
 
 import SwiftUI
 
-
+// MARK: - Login View
+/// App ki login screen jahan user email/password daal kar sign in karta hai ya naya account banane ke liye "Sign Up" par jata hai.
 struct LoginView: View {
+    
+    // MARK: - Properties
     @StateObject var viewModel = LoginViewModel()
     
+    // MARK: - Body
     var body: some View {
-        NavigationStack{
-            
-            Spacer()
-            
-            VStack{
-                //logo image
-                Image("Image 7")
-                    .resizable()
-                    .frame(width: 200,height: 100)
-                    .scaledToFit()
+        NavigationStack {
+            VStack {
+                Spacer()
                 
-                //text fields
-                VStack{
-                    TextField(text: $viewModel.email) {
-                        Text("Enter your email")
-                            
-                    }
-                    .autocapitalization(.none)
-                    .modifier(IGTextFieldModifier())
-                    
-                    SecureField(text: $viewModel.password) {
-                        Text("Password")
-                    }
-                    .modifier(IGTextFieldModifier())
-                    
-                }
+                // 1. Instagram Logo
+                logoSection
                 
-                Button {
-                    print("FIrgt ")
-                } label: {
-                    Text("Forgot Password?")
-                }
-                .padding()
-                .font(.caption)
-                .bold()
-                .foregroundStyle(Color.blue)
-                .padding(.horizontal,20)
-                .frame(maxWidth: .infinity,alignment: .trailing)
+                // 2. Email & Password TextFields
+                inputFieldsSection
                 
-                Button {
-                    Task{
-                        try await viewModel.signIn()
-                    }
-                    
-                } label: {
-                    Text("Log In")
-                }
-                .padding()
-                .frame(maxWidth: .infinity)
-                .frame(height: 50)
-                .background(Color.blue)
-                .bold()
-                .foregroundStyle(Color.white)
-                .cornerRadius(20)
-                .padding(.horizontal,20)
+                // 3. Forgot Password Button
+                forgotPasswordButton
                 
+                // 4. Log In Button
+                loginButton
+                
+                Spacer()
+                
+                Divider()
+                
+                // 5. Bottom Sign Up Navigation Link
+                signUpLinkSection
             }
-
-            Spacer()
-            
-            Divider()
-                
-            
-            NavigationLink {
-                AddEmailView()
-            } label: {
-                HStack(spacing:2){
-                    Text("Don't have an acoount? ") +
-                    Text("Sign Up")
-                        .bold()
-                }
-                .font(.footnote)
-                
-            }
-            .padding()
-
-            
         }
+    }
+}
+
+// MARK: - Subviews (Code ko clean aur readable rakhne ke liye)
+private extension LoginView {
+    
+    /// Instagram logo image
+    var logoSection: some View {
+        Image("Image 7")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 200, height: 100)
+    }
+    
+    /// Email aur Password input fields
+    var inputFieldsSection: some View {
+        VStack(spacing: 12) {
+            TextField("Enter your email", text: $viewModel.email)
+                .textInputAutocapitalization(.never)
+                .modifier(IGTextFieldModifier())
+            
+            SecureField("Password", text: $viewModel.password)
+                .modifier(IGTextFieldModifier())
+        }
+    }
+    
+    /// Forgot Password button
+    var forgotPasswordButton: some View {
+        Button {
+            print("DEBUG: Forgot Password tapped")
+        } label: {
+            Text("Forgot Password?")
+                .font(.caption)
+                .fontWeight(.bold)
+                .foregroundStyle(Color.blue)
+        }
+        .frame(maxWidth: .infinity, alignment: .trailing)
+        .padding(.vertical, 12)
+        .padding(.horizontal, 20)
+    }
+    
+    /// Primary Log In button
+    var loginButton: some View {
+        Button {
+            Task {
+                try await viewModel.signIn()
+            }
+        } label: {
+            Text("Log In")
+                .modifier(IGPrimaryButtonModifier())
+        }
+    }
+    
+    /// Bottom navigation link jo Sign-Up flow (`AddEmailView`) start karta hai
+    var signUpLinkSection: some View {
+        NavigationLink {
+            AddEmailView()
+        } label: {
+            HStack(spacing: 3) {
+                Text("Don't have an account?")
+                Text("Sign Up")
+                    .fontWeight(.bold)
+            }
+            .font(.footnote)
+        }
+        .padding(.vertical, 16)
     }
 }
 
 #Preview {
     LoginView()
-    
 }

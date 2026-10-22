@@ -7,48 +7,47 @@
 
 import SwiftUI
 
+// MARK: - Sign Up Step 1: Add Email View
+/// Naya account banate waqt sabse pehle user se email lene wali screen.
 struct AddEmailView: View {
     
-    @EnvironmentObject var viewModel : RegistrationViewModel
+    // MARK: - Properties
+    /// `ContentView` se inject kiya gaya shared ViewModel jo sign-up ke teeno steps ka data store rakhta hai
+    @EnvironmentObject var viewModel: RegistrationViewModel
     
+    // MARK: - Body
     var body: some View {
-            VStack(spacing: 15){
-                
-                Text("Add your email")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .padding(.top)
-                
-                Text("You'll use this email to sign in to your account ")
-                    .font(.footnote)
-                    .foregroundStyle(Color.gray)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal,20)
-                
-                TextField(text: $viewModel.email) {
-                    Text("Email")
-                }
-                .modifier(IGTextFieldModifier())
+        VStack(spacing: 15) {
+            
+            // Heading
+            Text("Add your email")
+                .font(.title2)
+                .fontWeight(.bold)
+                .padding(.top)
+            
+            // Subtitle instruction
+            Text("You'll use this email to sign in to your account")
+                .font(.footnote)
+                .foregroundStyle(Color.gray)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 20)
+            
+            // Email input field
+            TextField("Email", text: $viewModel.email)
                 .textInputAutocapitalization(.never)
-                
-                NavigationLink {
-                    CreateUsernameView()
-                } label: {
-                    Text("Next")
-                }
-                .padding()
-                .frame(maxWidth: .infinity)
-                .frame(height: 55)
-                .background(Color.blue)
-                .foregroundStyle(Color.white)
-                .cornerRadius(20)
-                .bold()
-                .padding(.horizontal,20)
-
-                
+                .modifier(IGTextFieldModifier())
+            
+            // Step 2 (`CreateUsernameView`) par jaane ka button
+            NavigationLink {
+                CreateUsernameView()
+            } label: {
+                Text("Next")
+                    .modifier(IGPrimaryButtonModifier())
             }
-            .padding(.top,40)
+            
             Spacer()
+        }
+        .padding(.top, 40)
     }
 }
 

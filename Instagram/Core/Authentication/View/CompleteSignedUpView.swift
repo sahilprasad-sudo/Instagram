@@ -1,4 +1,3 @@
-
 //
 //  CompleteSignedUpView.swift
 //  Instagram
@@ -8,51 +7,44 @@
 
 import SwiftUI
 
+// MARK: - Sign Up Step 4: Complete Sign Up View
+/// Sign-up ka aakhri step jahan "Complete Sign Up" dabane par Firebase mein naya user create hota hai.
 struct CompleteSignedUpView: View {
     
-    @EnvironmentObject var viewModel : RegistrationViewModel
+    // MARK: - Properties
+    @EnvironmentObject var viewModel: RegistrationViewModel
+    
+    // MARK: - Body
     var body: some View {
-        VStack(spacing: 15){
+        VStack(spacing: 15) {
             Spacer()
             
+            // Welcome message ke saath user ka chosen username
             Text("Welcome to Instagram, \(viewModel.username)")
                 .font(.title2)
                 .fontWeight(.bold)
+                .multilineTextAlignment(.center)
                 .padding(.top)
-                .multilineTextAlignment(.center)
             
-            Text("Click below to complete registration and start using instagram")
+            Text("Click below to complete registration and start using Instagram")
                 .font(.footnote)
+                .fontWeight(.semibold)
                 .foregroundStyle(Color.black)
-                .bold()
                 .multilineTextAlignment(.center)
-                .padding(.horizontal,20)
+                .padding(.horizontal, 20)
             
-            
-            
+            // Account create karne wala final button
             Button {
-                Task{
+                Task {
                     try await viewModel.createUser()
                 }
-                
-                
             } label: {
                 Text("Complete Sign Up")
+                    .modifier(IGPrimaryButtonModifier())
             }
-            .padding()
-            .frame(maxWidth: .infinity)
-            .frame(height: 55)
-            .background(Color.blue)
-            .foregroundStyle(Color.white)
-            .cornerRadius(20)
-            .bold()
-            .padding(.horizontal,20)
-
             
+            Spacer()
         }
-        Spacer()
-        .padding(.top,40)
-
     }
 }
 
@@ -60,4 +52,3 @@ struct CompleteSignedUpView: View {
     CompleteSignedUpView()
         .environmentObject(RegistrationViewModel())
 }
-

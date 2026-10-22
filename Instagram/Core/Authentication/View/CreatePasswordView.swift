@@ -7,47 +7,45 @@
 
 import SwiftUI
 
+// MARK: - Sign Up Step 3: Create Password View
+/// Username select karne ke baad password set karne wali screen.
 struct CreatePasswordView: View {
     
-    @EnvironmentObject var viewModel : RegistrationViewModel
+    // MARK: - Properties
+    @EnvironmentObject var viewModel: RegistrationViewModel
     
+    // MARK: - Body
     var body: some View {
-        VStack(spacing: 15){
+        VStack(spacing: 15) {
             
+            // Heading
             Text("Create a password")
                 .font(.title2)
                 .fontWeight(.bold)
                 .padding(.top)
             
-            Text("Your password must be atleast 6 characters in length")
+            // Subtitle instruction
+            Text("Your password must be at least 6 characters in length")
                 .font(.footnote)
                 .foregroundStyle(Color.gray)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal,20)
+                .padding(.horizontal, 20)
             
-            SecureField(text: $viewModel.password) {
-                Text("Password")
-            }
-            .modifier(IGTextFieldModifier())
+            // Password input field (characters hide rehte hain)
+            SecureField("Password", text: $viewModel.password)
+                .modifier(IGTextFieldModifier())
             
+            // Final Step (`CompleteSignedUpView`) par jaane ka button
             NavigationLink {
                 CompleteSignedUpView()
             } label: {
                 Text("Next")
+                    .modifier(IGPrimaryButtonModifier())
             }
-            .padding()
-            .frame(maxWidth: .infinity)
-            .frame(height: 55)
-            .background(Color.blue)
-            .foregroundStyle(Color.white)
-            .cornerRadius(20)
-            .bold()
-            .padding(.horizontal,20)
-
             
+            Spacer()
         }
-        .padding(.top,40)
-        Spacer()
+        .padding(.top, 40)
     }
 }
 

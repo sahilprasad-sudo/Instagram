@@ -7,35 +7,34 @@
 
 import SwiftUI
 
+// MARK: - Current User Profile View
+/// Bottom Tab Bar ke 5th tab par logged-in user ki apni profile dikhane wali screen (top-right mein Sign Out button ke saath).
 struct CurrentUserProfileView: View {
     
-    let user:User
-    var posts:[Post]{
-       return Post.MOCK_Posts.filter({$0.user?.username == user.username})
-   }
+    // MARK: - Properties
+    let user: User
     
-    private let gridItems:[GridItem] = [
-        
-        .init(.flexible(),spacing:1),
-        .init(.flexible(),spacing:1),
-        .init(.flexible(),spacing:1),
-        
-    ]
+    /// Logged-in user ki posts filter karke nikalta hai
+    var posts: [Post] {
+        Post.MOCK_Posts.filter { $0.user?.username == user.username || $0.ownerUid == user.id }
+    }
     
+    // MARK: - Body
     var body: some View {
-        NavigationStack{
-            ScrollView{
-                VStack(spacing: 8){
-                    //Header
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 8) {
+                    // 1. Top Profile Header (DP, Stats, Bio, Edit Profile Button)
                     ProfileHeaderView(user: user)
-                    //Post Grid View
                     
+                    // 2. Bottom 3x3 Posts Grid
                     PostGridView(posts: posts)
                 }
             }
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                // Top-right menu button: Tap karne par user Sign Out ho jata hai
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         AuthService.shared.signOut()
@@ -43,11 +42,9 @@ struct CurrentUserProfileView: View {
                         Image(systemName: "line.3.horizontal")
                             .foregroundStyle(Color.black)
                     }
-
                 }
             }
         }
-        
     }
 }
 
